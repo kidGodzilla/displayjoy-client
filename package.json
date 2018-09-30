@@ -5,7 +5,8 @@
   "main": "./src/display-joy.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "docs": ""
+    "docs": "./node_modules/.bin/jsdoc display-joy.js -d docs -t ./node_modules/minami",
+    "start": "cd docs && serve"
   },
   "repository": {
     "type": "git",
@@ -18,8 +19,6 @@
   },
   "homepage": "https://github.com/kidGodzilla/displayjoy-client#readme",
   "dependencies": {
-    "esdoc": "^1.1.0",
-    "esdoc-standard-plugin": "^1.0.0",
     "jsdoc": "^3.5.5",
     "minami": "^1.2.3"
   }
