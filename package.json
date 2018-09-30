@@ -2,7 +2,7 @@
   "name": "displayjoy-client",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "./src/display-joy.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "docs": "./node_modules/.bin/esdoc"
