@@ -6,6 +6,12 @@ Display Joy Digital Signage client library
 
 ## Installation
 
+### Client-side (CDN)
+
+`https://unpkg.com/displayjoy-client@latest/display-joy.js`
+
+### NPM
+
 Run `npm i -s displayjoy-client` to save locally via NPM
 
 ## References

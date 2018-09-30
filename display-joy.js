@@ -121,7 +121,25 @@ var DisplayJoy = (function DisplayJoy () {
 
 
 
+    // Include MQTT client
 
+    // Include or Require jQuery ?
+
+
+    function init () {}
+
+    function setId () {}
+
+    function setKey () {}
+
+    function ping () {}
+
+    function setRegistry () {}
+
+
+    function getConfiguration () {}
+
+    function subscribeToConfigurationUpdates () {}
 
 
 
