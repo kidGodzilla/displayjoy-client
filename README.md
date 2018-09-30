@@ -7,3 +7,5 @@ Display Joy Digital Signage client library
 
 ### Documentation
 > Docs: https://kidgodzilla.github.io/displayjoy-client/docs/
+
+> Doc comments: http://usejsdoc.org/
