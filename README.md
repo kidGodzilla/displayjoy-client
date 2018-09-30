@@ -1,6 +1,14 @@
-# displayjoy-client
+# Display Joy client library
 
 Display Joy Digital Signage client library
+
+## About
+
+## Installation
+
+Run `npm i -s displayjoy-client` to save locally via NPM
+
+## References
 
 ### Website
 > Website: https://kidgodzilla.github.io/displayjoy-client/
