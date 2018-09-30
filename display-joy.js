@@ -3,7 +3,7 @@ var DisplayJoy = (function DisplayJoy () {
     var that = this;
 
     /**
-     *
+     * UTILS
      */
     function setLocalStorage (key, value) {
         if (!key || !value) return;
@@ -62,6 +62,37 @@ var DisplayJoy = (function DisplayJoy () {
     function month (i) {
         return i18n.months[i];
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
