@@ -8,8 +8,10 @@ var DisplayJoy = (function DisplayJoy () {
 
     var that = this;
 
+
     /**
      * @function setLocalStorage
+     * @memberof DisplayJoy
      * @desc Safely set a local storage key to a specific value
      * @param {string} key - localStorage key to set
      * @param {string} value - new localStorage value
@@ -28,8 +30,10 @@ var DisplayJoy = (function DisplayJoy () {
         return true;
     }
 
+
     /**
      * @function getLocalStorage
+     * @memberof DisplayJoy
      * @desc Safely get a value for a specific local storage key
      * @param {string} key - localStorage key to get
      * @returns {string} - returns the value of the localStorage key
@@ -47,8 +51,10 @@ var DisplayJoy = (function DisplayJoy () {
         return result;
     }
 
+
     /**
      * @function getSearchParam
+     * @memberof DisplayJoy
      * @desc Safely get a search (query) parameter
      * @param {string} key - key of location.search value to get
      * @returns {string} - returns the value of the requested query param
@@ -62,6 +68,25 @@ var DisplayJoy = (function DisplayJoy () {
         return val;
     }
 
+    /**
+     * @function coerceBoolean
+     * @memberof DisplayJoy
+     * @desc coerces a boolean value from an unknown variable type
+     * @param ins - incoming variable
+     * @returns {boolean} - returns the boolean value of the incoming value
+     * @example
+     * coerceBoolean('true') // returns true
+     * @example
+     * coerceBoolean('tru dat') // returns true
+     * @example
+     * coerceBoolean(1) // returns true
+     * @example
+     * coerceBoolean(true) // returns true
+     * @example
+     * coerceBoolean(0) // returns false
+     * @example
+     * coerceBoolean(NaN) // returns false
+     */
     function coerceBoolean (ins) {
         if (typeof ins === 'boolean') return ins; // Just pass it back if it's already a BOOLEAN
         if (String(ins) == 1) return true; // 1 -> true
