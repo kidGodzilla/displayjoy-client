@@ -1,16 +1,27 @@
+/**
+ * DisplayJoy Client Library (constructor)
+ * @access public
+ */
 var DisplayJoy = (function DisplayJoy () {
 
     var that = this;
 
     /**
-     * UTILS
+     * Safely set local storage, similar to localStorage.setItem()
+     * @param {string} key - root directory path.
+     * @param {string} value - target JavaScript file path.
+     * @returns {Boolean} - returns true/false if operation succeeded without error.
+     * @public
      */
     function setLocalStorage (key, value) {
-        if (!key || !value) return;
+        if (!key || !value) return false;
 
         try { localStorage.setItem(key, value) } catch (e) {
             console.log(e);
+            return false;
         }
+
+        return true;
     }
 
     function getLocalStorage (key) {
