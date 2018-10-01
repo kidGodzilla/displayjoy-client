@@ -4,8 +4,9 @@
  * @example
  * var dj = new DisplayJoy();
  */
-var DisplayJoy = (function DisplayJoy () {
+var DisplayJoy = (function DisplayJoy (obj) {
 
+    window._djConfig = Object.assign({}, obj);
     var socket, streamTo = null, that = this;
 
 
@@ -171,8 +172,12 @@ var DisplayJoy = (function DisplayJoy () {
         var url = 'https://static.meetingroom365.com/config/key-' + window.__displayKey + '.json';
 
         $.getJSON(url, function (data) {
-            if (data && typeof data === 'object') window.displayConfig = data;
-            console.log(data);
+            if (data && typeof data === 'object') {
+
+                if (window.applyConfiguration) applyConfiguration(data);
+                else window.displayConfig = data;
+                console.log('Device configuration:', data);
+            }
 
             if (cb && typeof cb === "function") cb();
         });
