@@ -122,6 +122,7 @@ var DisplayJoy = (function DisplayJoy () {
     }
 
     function setKey (key) {
+        console.log('setKey to', key);
         window.__displayKey = key;
         identify();
     }
@@ -135,6 +136,7 @@ var DisplayJoy = (function DisplayJoy () {
         if (!window.__displayKey) return;
 
         if (socket) socket.emit('identify', { site: location.hostname, displayKey: window.__displayKey });
+        console.log('identify');
     }
 
     function initialize (cb) {
@@ -147,6 +149,7 @@ var DisplayJoy = (function DisplayJoy () {
 
                 // Announce that we have arrived.
                 if (window.__displayKey) identify();
+                console.log('initialized');
 
                 if (cb && typeof cb === "function") cb();
             });
@@ -159,13 +162,14 @@ var DisplayJoy = (function DisplayJoy () {
         var url = 'https://static.meetingroom365.com/config/key-' + window.__displayKey + '.json';
 
         $.getJSON(url, function (data) {
-            if (data && typeof data === 'object') window.displayKey = data;
+            if (data && typeof data === 'object') window.displayConfig = data;
             console.log(data);
         });
     }
 
     function ping () {
         if (socket) socket.emit('ping', { to: streamTo, content: 'ping' });
+        console.log('ping');
     }
 
 
