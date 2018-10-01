@@ -6,7 +6,7 @@
  */
 var DisplayJoy = (function DisplayJoy () {
 
-    var that = this;
+    var socket, streamTo = null, that = this;
 
 
     /**
@@ -30,7 +30,6 @@ var DisplayJoy = (function DisplayJoy () {
         return true;
     }
 
-
     /**
      * @function getLocalStorage
      * @memberof DisplayJoy
@@ -50,7 +49,6 @@ var DisplayJoy = (function DisplayJoy () {
 
         return result;
     }
-
 
     /**
      * @function getSearchParam
@@ -119,54 +117,79 @@ var DisplayJoy = (function DisplayJoy () {
         return i18n.months[i];
     }
 
+    function setConfig (config) {
+        window.__deviceConfiguration = config;
+    }
+
+    function setKey (key) {
+        window.__displayKey = key;
+        identify();
+    }
+
+    function handleUpdate (msg) {
+        getConfiguration();
+        console.log(msg);
+    }
+
+    function identify () {
+        if (!window.__displayKey) return;
+
+        socket.emit('identify', { site: location.hostname, displayKey: window.__displayKey });
+    }
+
+    function initialize () {
+        $(document).ready(function () {
+            $.getScript('https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js').then(function () {
+                socket = io('https://msg.meetingroom365.com');
+
+                // We've received an update. Go get it.
+                socket.on('update', handleUpdate);
+
+                // Announce that we have arrived.
+                if (window.__displayKey) identify();
+            });
+        });
+    }
+
+    function getConfiguration () {
+        if (!window.__displayKey) return;
+
+        var url = 'https://static.meetingroom365.com/config/key-' + window.__displayKey + '.json';
+
+        $.getJSON(url, function (data) {
+            if (data && typeof data === 'object') window.displayKey = data;
+            console.log(data);
+        });
+    }
+
+    function ping () {
+        socket.emit('ping', { to: streamTo, content: 'ping' });
+    }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // Create / export globals
+    /**
+     * Create / export globals
+     */
     window.DisplayJoy = {};
+    
+    DisplayJoy.getConfiguration = getConfiguration;
     DisplayJoy.setLocalStorage = setLocalStorage;
     DisplayJoy.getLocalStorage = getLocalStorage;
     DisplayJoy.getSearchParam = getSearchParam;
     DisplayJoy.coerceBoolean = coerceBoolean;
-
-    DisplayJoy.tp = tp;
-    DisplayJoy.hrs = hrs;
-    DisplayJoy.ampm = ampm;
-    DisplayJoy.month = month;
+    DisplayJoy.initialize = initialize;
     DisplayJoy.dayOfWeek = dayOfWeek;
+    DisplayJoy.setConfig = setConfig;
+    DisplayJoy.identify = identify;
+    DisplayJoy.setKey = setKey;
+    DisplayJoy.month = month;
+    DisplayJoy.ping = ping;
+    DisplayJoy.ampm = ampm;
+    DisplayJoy.hrs = hrs;
+    DisplayJoy.tp = tp;
 
-
+    // Kickoff
+    initialize();
 
     return function () {
         return DisplayJoy;
