@@ -171,15 +171,23 @@ var DisplayJoy = (function DisplayJoy (obj) {
 
         var url = 'https://static.meetingroom365.com/config/key-' + window.__displayKey + '.json';
 
-        $.getJSON(url, function (data) {
-            if (data && typeof data === 'object') {
+        $.ajax({
+            url: url,
+            type: 'GET',
+            dataType: "json",
+            beforeSend: function (xhr) {
+                xhr.withCredentials = false;
+            },
+            success: function (data) {
+                if (data && typeof data === 'object') {
 
-                if (window.applyConfiguration) applyConfiguration(data);
-                else window.displayConfig = data;
-                console.log('Device configuration:', data);
+                    if (window.applyConfiguration) applyConfiguration(data);
+                    else window.displayConfig = data;
+                    console.log('Device configuration:', data);
+                }
+
+                if (cb && typeof cb === "function") cb();
             }
-
-            if (cb && typeof cb === "function") cb();
         });
     }
 
