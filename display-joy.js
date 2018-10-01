@@ -121,23 +121,24 @@ var DisplayJoy = (function DisplayJoy () {
         window.__deviceConfiguration = config;
     }
 
-    function setKey (key) {
+    function setKey (key, cb) {
         console.log('setKey to', key);
         window.__displayKey = key;
-        identify();
+        identify(cb);
     }
 
     function handleUpdate (msg) {
         getConfiguration();
-        console.log(msg);
+        console.log('getConfiguration', msg);
     }
 
-    function identify () {
+    function identify (cb) {
         if (!window.__displayKey) return;
 
         if (socket) {
             socket.emit('identify', { site: location.hostname, displayKey: window.__displayKey });
             console.log('identify');
+            getConfiguration(cb);
         }
     }
 
@@ -158,7 +159,13 @@ var DisplayJoy = (function DisplayJoy () {
         });
     }
 
-    function getConfiguration () {
+    function init (key, cb) {
+        initialize(function () {
+            setKey(key, cb);
+        });
+    }
+
+    function getConfiguration (cb) {
         if (!window.__displayKey) return;
 
         var url = 'https://static.meetingroom365.com/config/key-' + window.__displayKey + '.json';
@@ -166,6 +173,8 @@ var DisplayJoy = (function DisplayJoy () {
         $.getJSON(url, function (data) {
             if (data && typeof data === 'object') window.displayConfig = data;
             console.log(data);
+
+            if (cb && typeof cb === "function") cb();
         });
     }
 
@@ -191,8 +200,9 @@ var DisplayJoy = (function DisplayJoy () {
     DisplayJoy.identify = identify;
     DisplayJoy.setKey = setKey;
     DisplayJoy.month = month;
-    DisplayJoy.ping = ping;
     DisplayJoy.ampm = ampm;
+    DisplayJoy.ping = ping;
+    DisplayJoy.init = init;
     DisplayJoy.hrs = hrs;
     DisplayJoy.tp = tp;
 
