@@ -134,10 +134,10 @@ var DisplayJoy = (function DisplayJoy () {
     function identify () {
         if (!window.__displayKey) return;
 
-        socket.emit('identify', { site: location.hostname, displayKey: window.__displayKey });
+        if (socket) socket.emit('identify', { site: location.hostname, displayKey: window.__displayKey });
     }
 
-    function initialize () {
+    function initialize (cb) {
         $(document).ready(function () {
             $.getScript('https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js').then(function () {
                 socket = io('https://msg.meetingroom365.com');
@@ -147,6 +147,8 @@ var DisplayJoy = (function DisplayJoy () {
 
                 // Announce that we have arrived.
                 if (window.__displayKey) identify();
+
+                if (cb && typeof cb === "function") cb();
             });
         });
     }
@@ -163,7 +165,7 @@ var DisplayJoy = (function DisplayJoy () {
     }
 
     function ping () {
-        socket.emit('ping', { to: streamTo, content: 'ping' });
+        if (socket) socket.emit('ping', { to: streamTo, content: 'ping' });
     }
 
 
@@ -171,7 +173,7 @@ var DisplayJoy = (function DisplayJoy () {
      * Create / export globals
      */
     window.DisplayJoy = {};
-    
+
     DisplayJoy.getConfiguration = getConfiguration;
     DisplayJoy.setLocalStorage = setLocalStorage;
     DisplayJoy.getLocalStorage = getLocalStorage;
@@ -187,9 +189,6 @@ var DisplayJoy = (function DisplayJoy () {
     DisplayJoy.ampm = ampm;
     DisplayJoy.hrs = hrs;
     DisplayJoy.tp = tp;
-
-    // Kickoff
-    initialize();
 
     return function () {
         return DisplayJoy;
