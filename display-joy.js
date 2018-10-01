@@ -173,7 +173,7 @@ var DisplayJoy = (function DisplayJoy () {
         $.getJSON(url, function (data) {
             if (data && typeof data === 'object') window.displayConfig = data;
             console.log(data);
-            
+
             if (cb && typeof cb === "function") cb();
         });
     }
@@ -200,8 +200,9 @@ var DisplayJoy = (function DisplayJoy () {
     DisplayJoy.identify = identify;
     DisplayJoy.setKey = setKey;
     DisplayJoy.month = month;
-    DisplayJoy.ping = ping;
     DisplayJoy.ampm = ampm;
+    DisplayJoy.ping = ping;
+    DisplayJoy.init = init;
     DisplayJoy.hrs = hrs;
     DisplayJoy.tp = tp;
 
