@@ -21,9 +21,14 @@ Display Joy's developer libraries provide everything you need to provision, mana
 
 Run `npm i -s displayjoy-client` to save locally via NPM
 
+
 ## Usage Examples
+The following example registers a device with the display key **fooallbars**, gets it's **device configuration**, subscribes to updates, and sends regular status updates.
 
-
+```
+var dj = new DisplayJoy();
+dj.init('fooallbars');
+```
 
 
 ## References
