@@ -135,8 +135,10 @@ var DisplayJoy = (function DisplayJoy () {
     function identify () {
         if (!window.__displayKey) return;
 
-        if (socket) socket.emit('identify', { site: location.hostname, displayKey: window.__displayKey });
-        console.log('identify');
+        if (socket) {
+            socket.emit('identify', { site: location.hostname, displayKey: window.__displayKey });
+            console.log('identify');
+        }
     }
 
     function initialize (cb) {
