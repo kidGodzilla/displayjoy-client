@@ -154,7 +154,10 @@ var DisplayJoy = (function DisplayJoy (obj) {
     }
 
     function identify (cb) {
-        updateStatus({}, cb);
+        updateStatus({}, function () {
+            console.log('identify');
+            getConfiguration(cb);
+        });
     }
 
     function updateStatus (obj, cb) {
@@ -168,7 +171,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
 
             socket.emit('identify', obj);
             console.log('update status', obj);
-            getConfiguration(cb);
+            cb();
         }
     }
 
