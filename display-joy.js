@@ -154,11 +154,20 @@ var DisplayJoy = (function DisplayJoy (obj) {
     }
 
     function identify (cb) {
+        updateStatus({}, cb);
+    }
+
+    function updateStatus (obj, cb) {
         if (!window.__displayKey) return;
 
+        if (!obj || typeof obj !== 'object') obj = {};
+
         if (socket) {
-            socket.emit('identify', { site: location.hostname, displayKey: window.__displayKey });
-            console.log('identify');
+            obj.displayKey = window.__displayKey;
+            obj.site = location.hostname;
+
+            socket.emit('identify', obj);
+            console.log('update status');
             getConfiguration(cb);
         }
     }
@@ -221,6 +230,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
     DisplayJoy.getLocalStorage = getLocalStorage;
     DisplayJoy.getSearchParam = getSearchParam;
     DisplayJoy.coerceBoolean = coerceBoolean;
+    DisplayJoy.updateStatus = updateStatus;
     DisplayJoy.initialize = initialize;
     DisplayJoy.dayOfWeek = dayOfWeek;
     DisplayJoy.setConfig = setConfig;
