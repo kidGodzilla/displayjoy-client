@@ -238,7 +238,9 @@ var DisplayJoy = (function DisplayJoy (obj) {
 
         if (window.__uptime.indexOf(truncatedTimestamp) === -1) {
             window.__uptime.push(truncatedTimestamp);
-            setLocalStorage('__uptime', window.__uptime.join(','));
+
+            var uptimeString = window.__uptime.join(',').replace(/"/g,"");
+            setLocalStorage('__uptime', uptimeString);
         }
     }
 
