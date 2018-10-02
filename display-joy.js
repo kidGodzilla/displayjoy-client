@@ -167,7 +167,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
             obj.site = location.hostname;
 
             socket.emit('identify', obj);
-            console.log('update status');
+            console.log('update status', obj);
             getConfiguration(cb);
         }
     }
