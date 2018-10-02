@@ -171,7 +171,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
 
             socket.emit('identify', obj);
             console.log('update status', obj);
-            cb();
+            if (cb && typeof cb === "function") cb();
         }
     }
 
