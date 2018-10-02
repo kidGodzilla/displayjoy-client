@@ -133,6 +133,25 @@ var DisplayJoy = (function DisplayJoy (obj) {
         console.log('getConfiguration', msg);
     }
 
+    function getRequest (url, callback) {
+        var xmlHttp = new XMLHttpRequest();
+
+        xmlHttp.onreadystatechange = function () {
+            if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                callback(xmlHttp.responseText);
+        };
+
+        xmlHttp.open("GET", url, true);
+        xmlHttp.send(null);
+    }
+
+    function getScript (url, callback) {
+        var script = document.createElement('script');
+        script.src = url;
+        document.head.appendChild(script);
+        setTimeout(callback, 1000);
+    }
+
     function identify (cb) {
         if (!window.__displayKey) return;
 
@@ -144,19 +163,17 @@ var DisplayJoy = (function DisplayJoy (obj) {
     }
 
     function initialize (cb) {
-        $(document).ready(function () {
-            $.getScript('https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js').then(function () {
-                socket = io('https://msg.meetingroom365.com');
+        getScript('https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js', function () {
+            socket = io('https://msg.meetingroom365.com');
 
-                // We've received an update. Go get it.
-                socket.on('update', handleUpdate);
+            // We've received an update. Go get it.
+            socket.on('update', handleUpdate);
 
-                // Announce that we have arrived.
-                if (window.__displayKey) identify();
-                console.log('initialized');
+            // Announce that we have arrived.
+            if (window.__displayKey) identify();
+            console.log('initialized');
 
-                if (cb && typeof cb === "function") cb();
-            });
+            if (cb && typeof cb === "function") cb();
         });
     }
 
@@ -171,7 +188,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
 
         var url = 'https://static.meetingroom365.com/config/key-' + window.__displayKey + '.json';
 
-        $.getJSON(url, function (data) {
+        getRequest(url, function (data) {
             if (data && typeof data === 'object') {
 
                 if (window.applyConfiguration) applyConfiguration(data);
