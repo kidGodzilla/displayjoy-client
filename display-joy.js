@@ -167,6 +167,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
 
         if (socket) {
             obj.displayKey = window.__displayKey;
+            if (__uptime) obj.uptime = __uptime;
             obj.site = location.hostname;
 
             socket.emit('identify', obj);
@@ -185,6 +186,10 @@ var DisplayJoy = (function DisplayJoy (obj) {
             // We've received an update. Go get it.
             socket.on('update', handleUpdate);
 
+            // Initialize uptime analytics
+            clearInterval(window._calculateAnalyticsTimer);
+            window._calculateAnalyticsTimer = setInterval(calculateAnalytics, 60 * 1000);
+            calculateAnalytics();
 
             // Announce that we have arrived.
             if (window.__displayKey) identify();
@@ -220,6 +225,21 @@ var DisplayJoy = (function DisplayJoy (obj) {
     function ping () {
         if (socket) socket.emit('ping', { to: streamTo, content: 'ping' });
         console.log('ping');
+    }
+
+    // Track uptime & analytics
+    function calculateAnalytics () {
+        var MR365EPOCH = 1454212801000;
+        var truncatedTimestamp = Math.floor(((+ new Date) - MR365EPOCH) / (5 * 60 * 1000));
+
+        if (!window.__uptime) window.__uptime = getLocalStorage('__uptime');
+        if (window.__uptime && typeof window.__uptime === 'string') window.__uptime = window.__uptime.split(',');
+        if (!window.__uptime) window.__uptime = [];
+
+        if (window.__uptime.indexOf(truncatedTimestamp) === -1) {
+            window.__uptime.push(truncatedTimestamp);
+            setLocalStorage('__uptime', window.__uptime.join(','));
+        }
     }
 
 
