@@ -133,15 +133,16 @@ var DisplayJoy = (function DisplayJoy (obj) {
         console.log('getConfiguration', msg);
     }
 
-    function getRequest (url, callback) {
+    function getJSON (url, cb) {
         var xmlHttp = new XMLHttpRequest();
 
         xmlHttp.onreadystatechange = function () {
             if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-                callback(xmlHttp.responseText);
+                cb(xmlHttp.response);
         };
 
         xmlHttp.open("GET", url, true);
+        xmlHttp.responseType = 'json';
         xmlHttp.send(null);
     }
 
@@ -188,7 +189,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
 
         var url = 'https://static.meetingroom365.com/config/key-' + window.__displayKey + '.json';
 
-        getRequest(url, function (data) {
+        getJSON(url, function (data) {
             if (data && typeof data === 'object') {
 
                 if (window.applyConfiguration) applyConfiguration(data);
