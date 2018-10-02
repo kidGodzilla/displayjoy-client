@@ -167,8 +167,12 @@ var DisplayJoy = (function DisplayJoy (obj) {
 
         if (socket) {
             obj.displayKey = window.__displayKey;
-            if (__uptime) obj.uptime = __uptime;
             obj.site = location.hostname;
+
+            if (__uptime && Array.isArray(__uptime)) {
+                var uptimeString = __uptime.join(',').replace(/"/g,"");
+                obj.uptime = uptimeString;
+            }
 
             socket.emit('identify', obj);
             console.log('update status', obj);
