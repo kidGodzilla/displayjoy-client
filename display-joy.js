@@ -167,8 +167,12 @@ var DisplayJoy = (function DisplayJoy (obj) {
         getScript('https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js', function () {
             socket = io('https://msg.meetingroom365.com');
 
+            // We've received a request to identify ourselves. Do it.
+            socket.on('identifyRequest', identify);
+
             // We've received an update. Go get it.
             socket.on('update', handleUpdate);
+
 
             // Announce that we have arrived.
             if (window.__displayKey) identify();
