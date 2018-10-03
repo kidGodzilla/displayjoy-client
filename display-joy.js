@@ -174,6 +174,8 @@ var DisplayJoy = (function DisplayJoy (obj) {
                 obj.uptime = uptimeString;
             }
 
+            if (obj.meetings && !Object.keys(obj.meetings).length) delete obj.meetings;
+
             socket.emit('identify', obj);
             console.log('update status', obj);
             if (cb && typeof cb === "function") cb();
