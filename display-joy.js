@@ -200,6 +200,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
             // Announce that we have arrived.
             if (window.__displayKey) identify();
             console.log('initialized');
+            checkLatency();
 
             if (cb && typeof cb === "function") cb();
         });
@@ -229,8 +230,31 @@ var DisplayJoy = (function DisplayJoy (obj) {
     }
 
     function ping () {
-        if (socket) socket.emit('ping', { to: streamTo, content: 'ping' });
-        console.log('ping');
+        if (!socket) return;
+
+        socket.emit('pingg', { to: streamTo, content: 'pingg' });
+        window._djLastPing = + new Date();
+        console.log('pingg');
+    }
+
+    function latency () {
+        if (!socket) return;
+
+        socket.emit('latency', Date.now(), function (startTime) {
+            var _latency = Date.now() - startTime;
+            if (window._debug) console.log('Latency:', _latency + 'ms');
+            window._djLastPing = + new Date();
+            window._djLatency = _latency;
+            return _latency;
+        })
+    }
+
+    function checkLatency () {
+        if (!socket) return;
+
+        clearInterval(window._latencyTimer);
+
+        window._latencyTimer = setInterval(latency, 60 * 1000);
     }
 
     // Track uptime & analytics
