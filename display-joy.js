@@ -185,7 +185,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
             if (__uptime && Array.isArray(__uptime)) {
                 var uptimeString = __uptime.join(',').replace(/"/g,"");
 
-                if (window.__lastUptimeString && window.__lastUptimeString != uptimeString) {
+                if (!window.__lastUptimeString || window.__lastUptimeString != uptimeString) {
                     obj.uptime = uptimeString;
                     window.__lastUptimeString = uptimeString;
                 }
