@@ -133,6 +133,19 @@ var DisplayJoy = (function DisplayJoy (obj) {
         console.log('getConfiguration', msg);
     }
 
+    function batteryCheck () {
+        try {
+            if (navigator.getBattery) navigator.getBattery().then(function (data) {
+                window.battery = {
+                    charging: data.charging,
+                    chargingTime: data.chargingTime,
+                    dischargingTime: data.dischargingTime,
+                    level: data.level
+                }
+            });
+        } catch(e){}
+    }
+
     function getJSON (url, cb) {
         var xmlHttp = new XMLHttpRequest();
 
@@ -171,7 +184,11 @@ var DisplayJoy = (function DisplayJoy (obj) {
 
             if (__uptime && Array.isArray(__uptime)) {
                 var uptimeString = __uptime.join(',').replace(/"/g,"");
-                obj.uptime = uptimeString;
+
+                if (window.__lastUptimeString && window.__lastUptimeString != uptimeString) {
+                    obj.uptime = uptimeString;
+                    window.__lastUptimeString = uptimeString;
+                }
             }
 
             if (obj.meetings && !Object.keys(obj.meetings).length) delete obj.meetings;
