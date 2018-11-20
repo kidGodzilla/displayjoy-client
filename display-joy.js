@@ -191,11 +191,21 @@ var DisplayJoy = (function DisplayJoy (obj) {
                 }
             }
 
+            try {
+                obj = JSON.parse(obj);
+            } catch (e) {
+                console.log(e);
+            }
+
             if (obj.meetings && !Object.keys(obj.meetings).length) delete obj.meetings;
 
             try {
                 obj = JSON.parse(obj.toString().trim()); // Attempt to remove invalid characters which may cause a bug
+            } catch (e) {
+                console.log(e);
+            }
 
+            try {
                 socket.emit('identify', obj);
                 console.log('update status', obj);
             } catch(e) {
