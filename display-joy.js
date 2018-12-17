@@ -191,14 +191,14 @@ var DisplayJoy = (function DisplayJoy (obj) {
             obj.displayKey = window.__displayKey;
             obj.site = location.hostname;
 
-            if (__uptime && Array.isArray(__uptime)) {
-                var uptimeString = __uptime.join(',').replace(/"/g,"");
-
-                if (!window.__lastUptimeString || window.__lastUptimeString != uptimeString) {
-                    obj.uptime = uptimeString;
-                    window.__lastUptimeString = uptimeString;
-                }
-            }
+            //if (__uptime && Array.isArray(__uptime)) {
+            //    var uptimeString = __uptime.join(',').replace(/"/g,"");
+            //
+            //    if (!window.__lastUptimeString || window.__lastUptimeString != uptimeString) {
+            //        obj.uptime = uptimeString;
+            //        window.__lastUptimeString = uptimeString;
+            //    }
+            //}
 
             try {
                 obj = JSON.parse(obj);
