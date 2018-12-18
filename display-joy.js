@@ -301,7 +301,10 @@ var DisplayJoy = (function DisplayJoy (obj) {
     function getConfiguration (cb) {
         if (!window.__displayKey) return;
 
-        var url = 'https://static.meetingroom365.com/config/key-' + window.__displayKey + '.json';
+        var displayKey = window.__displayKey;
+        displayKey = displayKey.replace('mgr-', '');
+
+        var url = 'https://static.meetingroom365.com/config/key-' + displayKey + '.json';
 
         getJSON(url, function (data) {
             if (data && typeof data === 'object') {
