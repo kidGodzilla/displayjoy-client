@@ -40,6 +40,25 @@ var DisplayJoy = (function DisplayJoy (obj) {
         return true;
     }
 
+
+    /**
+     * @function removeLocalStorage
+     * @memberof DisplayJoy
+     * @desc Safely remove a local storage key
+     * @param {string} key - localStorage key to remove
+     * @returns {Boolean} - returns true/false if operation succeeded without error.
+     * @example
+     * removeLocalStorage('foo'); // Removes localStorage key at `foo`
+     */
+    function removeLocalStorage (key) {
+        try {
+            localStorage.removeItem(key);
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
     /**
      * @function getLocalStorage
      * @memberof DisplayJoy
@@ -232,6 +251,12 @@ var DisplayJoy = (function DisplayJoy (obj) {
         setLocalStorage(key, value);
     }
 
+    function handleRemoveLocalStorage (key) {
+        if (!key) return;
+
+        removeLocalStorage(key);
+    }
+
     function initialize (cb) {
         //getScript('https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js', function () {
         //
@@ -250,6 +275,9 @@ var DisplayJoy = (function DisplayJoy (obj) {
 
         // Local Storage update request
         socket.on('updateLocalStorage', handleUpdateLocalStorage);
+
+        // Local Storage remove request
+        socket.on('removeLocalStorage', handleRemoveLocalStorage);
 
         // Initialize uptime analytics
         clearInterval(window._calculateAnalyticsTimer);
