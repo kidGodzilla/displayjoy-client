@@ -221,6 +221,17 @@ var DisplayJoy = (function DisplayJoy (obj) {
         }
     }
 
+    function handleRestart () {
+        if (window.restartApp && typeof window.restartApp === 'function')
+            window.restartApp();
+    }
+
+    function handleUpdateLocalStorage (key, value) {
+        if (!key || !value) return;
+
+        setLocalStorage(key, value);
+    }
+
     function initialize (cb) {
         //getScript('https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js', function () {
         //
@@ -233,6 +244,12 @@ var DisplayJoy = (function DisplayJoy (obj) {
 
         // We've received an update. Go get it.
         socket.on('update', handleUpdate);
+
+        // Restart request
+        socket.on('restart', handleRestart);
+
+        // Local Storage update request
+        socket.on('updateLocalStorage', handleUpdateLocalStorage);
 
         // Initialize uptime analytics
         clearInterval(window._calculateAnalyticsTimer);
