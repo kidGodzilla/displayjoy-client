@@ -1,6 +1,6 @@
 {
   "name": "displayjoy-client",
-  "version": "0.1.30",
+  "version": "0.1.31",
   "description": "Display Joy Digital Signage client library",
   "main": "./src/display-joy.js",
   "scripts": {
