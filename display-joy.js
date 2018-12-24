@@ -157,7 +157,8 @@ var DisplayJoy = (function DisplayJoy (obj) {
     }
 
     function handleUpdate (msg) {
-        getConfiguration();
+        if (window.getConfiguration) window.getConfiguration();
+        else getConfiguration();
         console.log('getConfiguration', msg);
     }
 
@@ -197,7 +198,9 @@ var DisplayJoy = (function DisplayJoy (obj) {
     function identify (cb) {
         updateStatus({}, function () {
             console.log('identify');
-            getConfiguration(cb);
+
+            if (window.getConfiguration) window.getConfiguration(cb);
+            else getConfiguration(cb);
         });
     }
 
