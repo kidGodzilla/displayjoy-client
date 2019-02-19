@@ -267,7 +267,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
         //});
 
         socket = io('https://msg.meetingroom365.com');
-        //socket2 = io('https://msg.mr365.co');
+        socket2 = io('https://msg.mr365.co');
 
         // We've received a request to identify ourselves. Do it.
         socket.on('identifyRequest', identify);
