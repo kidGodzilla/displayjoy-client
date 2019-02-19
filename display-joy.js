@@ -16,7 +16,7 @@
 var DisplayJoy = (function DisplayJoy (obj) {
 
     window._djConfig = Object.assign({}, obj);
-    var socket, streamTo = null, that = this;
+    var socket, socket2, streamTo = null, that = this;
 
 
     /**
@@ -234,6 +234,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
 
             try {
                 socket.emit('identify', obj);
+                if (socket2) socket2.emit('identify', obj);
                 console.log('update status', obj);
             } catch(e) {
                 console.log(e)
@@ -266,21 +267,27 @@ var DisplayJoy = (function DisplayJoy (obj) {
         //});
 
         socket = io('https://msg.meetingroom365.com');
+        socket2 = io('https://msg.mr365.co');
 
         // We've received a request to identify ourselves. Do it.
         socket.on('identifyRequest', identify);
+        socket2.on('identifyRequest', identify);
 
         // We've received an update. Go get it.
         socket.on('update', handleUpdate);
+        socket2.on('update', handleUpdate);
 
         // Restart request
         socket.on('restart', handleRestart);
+        socket2.on('restart', handleRestart);
 
         // Local Storage update request
         socket.on('updateLocalStorage', handleUpdateLocalStorage);
+        socket2.on('updateLocalStorage', handleUpdateLocalStorage);
 
         // Local Storage remove request
         socket.on('removeLocalStorage', handleRemoveLocalStorage);
+        socket2.on('removeLocalStorage', handleRemoveLocalStorage);
 
         // Initialize uptime analytics
         clearInterval(window._calculateAnalyticsTimer);
@@ -325,6 +332,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
         if (!socket) return;
 
         socket.emit('pingg', { to: streamTo, content: 'pingg' });
+        socket2.emit('pingg', { to: streamTo, content: 'pingg' });
         window._djLastPing = + new Date();
         console.log('pingg');
     }
@@ -338,7 +346,15 @@ var DisplayJoy = (function DisplayJoy (obj) {
             window._djLastPing = + new Date();
             window._djLatency = _latency;
             return _latency;
-        })
+        });
+
+        socket2.emit('latency', Date.now(), function (startTime) {
+            var _latency = Date.now() - startTime;
+            if (window._debug) console.log('Latency:', _latency + 'ms');
+            window._djLastPing = + new Date();
+            window._djLatency = _latency;
+            return _latency;
+        });
     }
 
     function checkLatency () {
