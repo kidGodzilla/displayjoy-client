@@ -262,9 +262,6 @@ var DisplayJoy = (function DisplayJoy (obj) {
     }
 
     function initialize (cb) {
-        //getScript('https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js', function () {
-        //
-        //});
 
         socket = io('https://msg.meetingroom365.com');
         socket2 = io('https://msg.mr365.co');
@@ -314,7 +311,8 @@ var DisplayJoy = (function DisplayJoy (obj) {
         var displayKey = window.__displayKey;
         displayKey = displayKey.replace('mgr-', '');
 
-        var url = 'https://static.meetingroom365.com/config/key-' + displayKey + '.json';
+        //var url = 'https://static.meetingroom365.com/config/key-' + displayKey + '.json';
+        var url = 'https://userconf.meetingroom365.com/key-' + displayKey + '.json';
 
         getJSON(url, function (data) {
             if (data && typeof data === 'object') {
