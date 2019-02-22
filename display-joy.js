@@ -33,7 +33,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
         if (!key || !value) return false;
 
         try { localStorage.setItem(key, value) } catch (e) {
-            console.log(e);
+            if (window._debug) console.log(e);
             return false;
         }
 
@@ -72,7 +72,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
         var result = '';
 
         try { result = localStorage.getItem(key) } catch (e) {
-            console.log(e);
+            if (window._debug) console.log(e);
             return result;
         }
 
@@ -151,7 +151,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
     }
 
     function setKey (key, cb) {
-        console.log('setKey to', key);
+        if (window._debug) console.log('setKey to', key);
         window.__displayKey = key;
         identify(cb);
     }
@@ -159,7 +159,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
     function handleUpdate (msg) {
         if (window.getConfiguration) window.getConfiguration();
         else getConfiguration();
-        console.log('getConfiguration', msg);
+        if (window._debug) console.log('getConfiguration', msg);
     }
 
     function batteryCheck () {
@@ -197,7 +197,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
 
     function identify (cb) {
         updateStatus({}, function () {
-            console.log('identify');
+            if (window._debug) console.log('identify');
 
             if (window.getConfiguration) window.getConfiguration(cb);
             else getConfiguration(cb);
@@ -235,7 +235,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
             try {
                 socket.emit('identify', obj);
                 if (socket2) socket2.emit('identify', obj);
-                console.log('update status', obj);
+                if (window._debug) console.log('update status', obj);
             } catch(e) {
                 console.log(e)
             }
@@ -293,7 +293,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
 
         // Announce that we have arrived.
         if (window.__displayKey) identify();
-        console.log('initialized');
+        if (window._debug) console.log('initialized');
         checkLatency();
 
         if (cb && typeof cb === "function") cb();
@@ -322,7 +322,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
 
                     if (window.applyConfiguration) applyConfiguration(data);
                     else window.displayConfig = data;
-                    console.log('Device configuration:', data);
+                    if (window._debug) console.log('Device configuration:', data);
                 }
             });
         }, 900);
@@ -336,7 +336,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
         socket.emit('pingg', { to: streamTo, content: 'pingg' });
         if (socket2) socket2.emit('pingg', { to: streamTo, content: 'pingg' });
         window._djLastPing = + new Date();
-        console.log('pingg');
+        if (window._debug) console.log('pingg');
     }
 
     function latency () {
