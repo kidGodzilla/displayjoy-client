@@ -16,7 +16,7 @@
 var DisplayJoy = (function DisplayJoy (obj) {
 
     window._djConfig = Object.assign({}, obj);
-    var socket, socket2, streamTo = null, that = this;
+    var socket, socket2, getConfTimer, streamTo = null, that = this;
 
 
     /**
@@ -311,19 +311,23 @@ var DisplayJoy = (function DisplayJoy (obj) {
         var displayKey = window.__displayKey;
         displayKey = displayKey.replace('mgr-', '');
 
-        //var url = 'https://static.meetingroom365.com/config/key-' + displayKey + '.json';
-        var url = 'https://userconf.meetingroom365.com/key-' + displayKey + '.json';
+        clearTimeout(getConfTimer); // Debounce
 
-        getJSON(url, function (data) {
-            if (data && typeof data === 'object') {
+        getConfTimer = setTimeout(function () {
+            //var url = 'https://static.meetingroom365.com/config/key-' + displayKey + '.json';
+            var url = 'https://userconf.meetingroom365.com/key-' + displayKey + '.json';
 
-                if (window.applyConfiguration) applyConfiguration(data);
-                else window.displayConfig = data;
-                console.log('Device configuration:', data);
-            }
+            getJSON(url, function (data) {
+                if (data && typeof data === 'object') {
 
-            if (cb && typeof cb === "function") cb();
-        });
+                    if (window.applyConfiguration) applyConfiguration(data);
+                    else window.displayConfig = data;
+                    console.log('Device configuration:', data);
+                }
+            });
+        }, 900);
+
+        if (cb && typeof cb === "function") cb();
     }
 
     function ping () {
