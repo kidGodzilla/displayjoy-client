@@ -261,6 +261,11 @@ var DisplayJoy = (function DisplayJoy (obj) {
         removeLocalStorage(key);
     }
 
+    function isHealthy (key) {
+        if (window.__debugHealthcheck) console.log('Healthy', key);
+        window.__healthcheckResult = 1;
+    }
+
     function initialize (cb) {
 
         socket = io('https://msg.mr365.co');
@@ -277,6 +282,10 @@ var DisplayJoy = (function DisplayJoy (obj) {
         // Restart request
         socket.on('restart', handleRestart);
         if (socket2) socket2.on('restart', handleRestart);
+
+        // Is healthy
+        socket.on('healthy', isHealthy);
+        if (socket2) socket2.on('healthy', isHealthy);
 
         // Local Storage update request
         socket.on('updateLocalStorage', handleUpdateLocalStorage);
@@ -295,6 +304,34 @@ var DisplayJoy = (function DisplayJoy (obj) {
         if (window.__displayKey) identify();
         if (window._debug) console.log('initialized');
         checkLatency();
+
+        // Do a healthcheck on a 60s interval. If we don't get a response, re-init
+        clearInterval(window.__healthcheckInterval);
+
+        window.__healthcheckInterval = setInterval(function () {
+            if (window.__displayKey) {
+
+                if (window.__noHealthchecks) return;
+
+                // Try to ping yourself via msg.mr365.co/healthcheck/:key
+                var hcUrl = 'https://msg.mr365.co/healthcheck/' + window.__displayKey;
+
+                window.__healthcheckResult = 0;
+
+                getJSON(hcUrl, function (data) {
+                    // Do nothing, but this should send us a reply basically instantly
+                });
+
+                // If no response after 5s reconnect to socket.io
+                setTimeout(function () {
+                    if (!window.__healthcheckResult) {
+                        // Upon failure
+                        console.log('Displayjoy Healthcheck failure, reconnecting to message broker.');
+                        init(window.__displayKey);
+                    }
+                }, 5000);
+            }
+        }, 60 * 1000);
 
         if (cb && typeof cb === "function") cb();
     }
