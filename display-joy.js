@@ -267,9 +267,11 @@ var DisplayJoy = (function DisplayJoy (obj) {
 
     function initialize (cb) {
 
+        var _srvr = 'https://msg.mr365.co';
 
+        if (window._djConfig && window._djConfig.server) _srvr = window._djConfig.server;
 
-        socket = io('https://msg.mr365.co');
+        socket = io(_srvr);
 
         // We've received a request to identify ourselves. Do it.
         socket.on('identifyRequest', identify);
@@ -307,8 +309,8 @@ var DisplayJoy = (function DisplayJoy (obj) {
 
                 if (window.__noHealthchecks) return;
 
-                // Try to ping yourself via msg.mr365.co/healthcheck/:key
-                var hcUrl = 'https://msg.mr365.co/healthcheck/' + window.__displayKey;
+                // Try to ping yourself via _srvr/healthcheck/:key
+                var hcUrl = _srvr + '/healthcheck/' + window.__displayKey;
 
                 window.__healthcheckResult = 0;
 
