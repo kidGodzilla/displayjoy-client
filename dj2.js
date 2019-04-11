@@ -83,11 +83,8 @@ var Awty = (function Awty () {
  * @example
  * var dj = new DisplayJoy();
  */
-var DisplayJoy = (function DisplayJoy (obj) {
-
+var DisplayJoy = (function DisplayJoy () {
     var getConfTimer, awty, _srvr = 'https://hwm.mr365.co', _APIURL = 'https://api.mr365.co';
-    window._djConfig = Object.assign({}, obj);
-
 
     function setLocalStorage (key, value) {
         if (!key || !value) return false;
@@ -225,7 +222,6 @@ var DisplayJoy = (function DisplayJoy (obj) {
     }
 
     function initialize (cb) {
-        if (window._djConfig && window._djConfig.server) _srvr = window._djConfig.server;
         if (window._djServerUrl) _srvr = window._djServerUrl;
 
         // Do not proceed if we've already initialized
@@ -256,31 +252,31 @@ var DisplayJoy = (function DisplayJoy (obj) {
     /**
      * Create / export globals
      */
-    window.DisplayJoy = {};
+    var __DisplayJoy = {};
 
-    DisplayJoy.getConfiguration = getConfiguration;
-    //DisplayJoy.setLocalStorage = setLocalStorage;
-    //DisplayJoy.getLocalStorage = getLocalStorage;
-    //DisplayJoy.getSearchParam = getSearchParam;
-    //DisplayJoy.coerceBoolean = coerceBoolean;
-    DisplayJoy.updateStatus = updateStatus;
-    //DisplayJoy.checkLatency = checkLatency;
-    DisplayJoy.initialize = initialize;
-    //DisplayJoy.dayOfWeek = dayOfWeek;
-    DisplayJoy.setConfig = setConfig;
-    DisplayJoy.identify = identify;
-    //DisplayJoy.latency = latency;
-    //DisplayJoy.setKey = setKey;
-    //DisplayJoy.month = month;
-    DisplayJoy.on = addAction;
-    //DisplayJoy.ampm = ampm;
-    //DisplayJoy.ping = ping;
-    DisplayJoy.init = init;
-    //DisplayJoy.hrs = hrs;
-    //DisplayJoy.tp = tp;
+    __DisplayJoy.getConfiguration = getConfiguration;
+    //__DisplayJoy.setLocalStorage = setLocalStorage;
+    //__DisplayJoy.getLocalStorage = getLocalStorage;
+    //__DisplayJoy.getSearchParam = getSearchParam;
+    //__DisplayJoy.coerceBoolean = coerceBoolean;
+    __DisplayJoy.updateStatus = updateStatus;
+    //__DisplayJoy.checkLatency = checkLatency;
+    __DisplayJoy.initialize = initialize;
+    //__DisplayJoy.dayOfWeek = dayOfWeek;
+    __DisplayJoy.setConfig = setConfig;
+    __DisplayJoy.identify = identify;
+    //__DisplayJoy.latency = latency;
+    //__DisplayJoy.setKey = setKey;
+    //__DisplayJoy.month = month;
+    __DisplayJoy.on = addAction;
+    //__DisplayJoy.ampm = ampm;
+    //__DisplayJoy.ping = ping;
+    __DisplayJoy.init = init;
+    //__DisplayJoy.hrs = hrs;
+    //__DisplayJoy.tp = tp;
 
     return function () {
-        return DisplayJoy;
+        return __DisplayJoy;
     };
 
 })();
