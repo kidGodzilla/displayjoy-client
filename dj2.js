@@ -190,7 +190,8 @@ var DisplayJoy = (function DisplayJoy () {
         try { obj = JSON.parse(obj) } catch (e) {}
         if (!obj || typeof obj !== 'object') obj = {};
 
-        obj.displayKey = window.__displayKey;
+        if (!obj.displayKey) obj.displayKey = window.__displayKey;
+        if (!obj.key) obj.key = window.__displayKey;
         obj.site = location.hostname;
 
         if (__uptime && Array.isArray(__uptime)) {
