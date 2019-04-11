@@ -271,6 +271,8 @@ var DisplayJoy = (function DisplayJoy (obj) {
 
         if (window._djConfig && window._djConfig.server) _srvr = window._djConfig.server;
 
+        if (window._djServerUrl) _srvr = window._djServerUrl;
+
         socket = io(_srvr);
 
         // We've received a request to identify ourselves. Do it.
