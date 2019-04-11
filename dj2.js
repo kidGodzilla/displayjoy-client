@@ -244,6 +244,9 @@ var DisplayJoy = (function DisplayJoy (obj) {
     }
 
     function init (key, cb) {
+        window.__displayKey = key;
+        setLocalStorage('_displayKey', key);
+
         initialize(function () {
             awty.init({ key: key, server: _srvr }, cb);
         });
@@ -267,7 +270,7 @@ var DisplayJoy = (function DisplayJoy (obj) {
     DisplayJoy.setConfig = setConfig;
     DisplayJoy.identify = identify;
     //DisplayJoy.latency = latency;
-    DisplayJoy.setKey = setKey;
+    //DisplayJoy.setKey = setKey;
     //DisplayJoy.month = month;
     DisplayJoy.on = addAction;
     //DisplayJoy.ampm = ampm;
