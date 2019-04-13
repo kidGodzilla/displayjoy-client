@@ -37,7 +37,8 @@ var Awty = (function Awty () {
         if (!window.jQuery || !window.$) return console.warn('Requires jQuery.');
 
         $.get(_server + '/s/' + _key + '?_=' + rint(999999999), function (cmd) {
-            var ms = new Date().getTime() - _st;
+            window.__lastPing = new Date().getTime();
+            var ms = __lastPing - _st;
 
             // Process commands
             var cmds = cmd.split(',');
