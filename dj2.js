@@ -203,7 +203,9 @@ var DisplayJoy = (function DisplayJoy () {
             }
         }
 
-        if (obj.meetings && !Object.keys(obj.meetings).length) delete obj.meetings;
+        try { obj.meetings = JSON.parse(obj.meetings) } catch (e) {}
+
+        if (obj.meetings && typeof obj.meetings == 'object' && !Object.keys(obj.meetings).length) delete obj.meetings;
 
         // Attempt to remove invalid characters which may cause a bug
         try { obj = JSON.parse(obj.toString().trim()) } catch (e) {} // silent
@@ -231,6 +233,14 @@ var DisplayJoy = (function DisplayJoy () {
         awty = new Awty();
         addAction('restart', handleRestart); // Todo: move out
         addAction('update', handleUpdate); // Todo: move out
+
+        if (!window.restartApp) window.restartApp = function () {
+            if (performance.now() < 60000) return;
+            if (window._debug) console.log('Restarting..');
+            try { top.location.reload() } catch(e){}
+            try { parent.location.reload() } catch(e){}
+            try { location.reload() } catch(e){}
+        };
 
         // Initialize uptime analytics
         clearInterval(window._calculateAnalyticsTimer);
