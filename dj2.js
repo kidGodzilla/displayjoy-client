@@ -87,6 +87,8 @@ var Awty = (function Awty () {
 var DisplayJoy = (function DisplayJoy () {
     var getConfTimer, awty, _srvr = 'https://hwm.mr365.co', _APIURL = 'https://api.meetingroom365.com';
 
+    if (window._APIURL) _APIURL = window._APIURL;
+
     function setLocalStorage (key, value) {
         if (!key || !value) return false;
 
