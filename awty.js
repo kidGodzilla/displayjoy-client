@@ -49,39 +49,41 @@ var Awty = (function Awty () {
             return __timr = setTimeout(_poll, 15000);
 
         } else {
-
             /**
              * Attempt to Init WebSocket connection
              */
-            var u = _server.replace('http', 'ws') + '/ws/' + _key;
-            window.__ws = new WebSocket(u);
+            if (!window.__wsErrorCount || window.__wsErrorCount < 10) {
+                var u = _server.replace('http', 'ws') + '/ws/' + _key;
+                window.__ws = new WebSocket(u);
 
-            window.__ws.onopen = function () {
-                if (_debug) console.log('ws opened', arguments);
-                window.__lastPingTs = + new Date();
-            };
+                window.__ws.onopen = function () {
+                    if (_debug) console.log('ws opened', arguments);
+                    window.__lastPingTs = + new Date();
+                };
 
-            window.__ws.onclose = function () {
-                if (_debug) console.log('ws closed');
-                window.__lastPingTs = 0;
-            };
+                window.__ws.onclose = function () {
+                    window.__wsErrorCount = window.__wsErrorCount ? ++window.__wsErrorCount : 1;
+                    if (_debug) console.log('ws closed');
+                    window.__lastPingTs = 0;
+                };
 
-            window.__ws.onmessage = function (cmd) {
-                if (_debug) console.log('ws cmd', cmd.data);
+                window.__ws.onmessage = function (cmd) {
+                    if (_debug) console.log('ws cmd', cmd.data);
 
-                window.__lastPingTs = + new Date();
-                if (cmd.data == 'hb') return;
+                    window.__lastPingTs = + new Date();
+                    if (cmd.data == 'hb') return;
 
-                // Process commands
-                var cmds = cmd.data ? cmd.data.split(',') : [];
+                    // Process commands
+                    var cmds = cmd.data ? cmd.data.split(',') : [];
 
-                cmds.forEach(function (command) {
-                    if (__actions[command] && typeof __actions[command] == 'function') __actions[command]();
-                });
+                    cmds.forEach(function (command) {
+                        if (__actions[command] && typeof __actions[command] == 'function') __actions[command]();
+                    });
 
-                // Default action
-                if (_defaultAction && typeof _defaultAction == 'function') _defaultAction(cmd);
-            };
+                    // Default action
+                    if (_defaultAction && typeof _defaultAction == 'function') _defaultAction(cmd);
+                };
+            }
         }
 
         $.get(_server + '/s/' + _key + '?_=' + rint(999999999), function (cmd) {
