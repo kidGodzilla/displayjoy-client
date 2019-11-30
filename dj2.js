@@ -2,7 +2,7 @@
  * Are we there yet?
  */
 var Awty = (function Awty () {
-    var _debug = 0, _key, __interval, __timr, _defaultAction, __actions = {}, _server = 'https://hwm.meetingroom365.com';
+    var _debug = 0, _key, __interval, __timr, _defaultAction, __actions = {}, _server = 'https://hwm.mr365.co';
 
     function rint (max) {
         return Math.floor(Math.random() * Math.floor(max));
@@ -24,7 +24,7 @@ var Awty = (function Awty () {
         $.get(_server + '/cmd/' + k + '/' + encodeURIComponent(cmd) + '?_=' + rint(999999999));
     }
 
-    function _poll (newConf, cb) {
+    function _poll (newConf) {
         if (typeof newConf == 'string') _key = newConf;
         if (!newConf || typeof newConf != 'object') newConf = {};
         if (newConf.defaultAction) _defaultAction = newConf.defaultAction;
@@ -34,11 +34,52 @@ var Awty = (function Awty () {
         var _st = new Date().getTime();
 
         if (!_key) return console.warn('Cannot init without assigning a key.');
-        if (!window.jQuery || !window.$) return console.warn('Requires jQuery.');
+        if (!jQuery || !$) return console.warn('Requires jQuery.');
+
+
+        // Skip request if received WebSocket ping in last 30s
+        if (window.__lastPingTs > (+ new Date()) - 30000) {
+            clearTimeout(__timr);
+            return __timr = setTimeout(_poll, 15000);
+
+        } else {
+
+            /**
+             * Attempt to Init WebSocket connection
+             */
+            var u = _server.replace('http', 'ws') + '/ws/' + _key;
+            window.__ws = new WebSocket(u);
+
+            window.__ws.onopen = function () {
+                if (_debug) console.log('ws opened', arguments);
+                window.__lastPingTs = + new Date();
+            };
+
+            window.__ws.onclose = function () {
+                if (_debug) console.log('ws closed');
+                window.__lastPingTs = 0;
+            };
+
+            window.__ws.onmessage = function (cmd) {
+                if (_debug) console.log('ws cmd', cmd.data);
+
+                window.__lastPingTs = + new Date();
+                if (cmd.data == 'hb') return;
+
+                // Process commands
+                var cmds = cmd.data ? cmd.data.split(',') : [];
+
+                cmds.forEach(function (command) {
+                    if (__actions[command] && typeof __actions[command] == 'function') __actions[command]();
+                });
+
+                // Default action
+                if (_defaultAction && typeof _defaultAction == 'function') _defaultAction(cmd);
+            };
+        }
 
         $.get(_server + '/s/' + _key + '?_=' + rint(999999999), function (cmd) {
-            window.__lastPing = new Date().getTime();
-            var ms = __lastPing - _st;
+            var ms = new Date().getTime() - _st;
 
             // Process commands
             var cmds = cmd.split(',');
@@ -61,8 +102,6 @@ var Awty = (function Awty () {
             clearTimeout(__timr);
             __timr = setTimeout(_poll, 7500);
         });
-
-        if (cb && typeof cb === "function") cb();
     }
 
     if (_key) _poll();
@@ -77,6 +116,7 @@ var Awty = (function Awty () {
         };
     };
 })();
+
 
 /**
  * DisplayJoy Client Library
@@ -269,25 +309,11 @@ var DisplayJoy = (function DisplayJoy () {
     var __DisplayJoy = {};
 
     __DisplayJoy.getConfiguration = getConfiguration;
-    //__DisplayJoy.setLocalStorage = setLocalStorage;
-    //__DisplayJoy.getLocalStorage = getLocalStorage;
-    //__DisplayJoy.getSearchParam = getSearchParam;
-    //__DisplayJoy.coerceBoolean = coerceBoolean;
     __DisplayJoy.updateStatus = updateStatus;
-    //__DisplayJoy.checkLatency = checkLatency;
     __DisplayJoy.initialize = initialize;
-    //__DisplayJoy.dayOfWeek = dayOfWeek;
     __DisplayJoy.setConfig = setConfig;
-    //__DisplayJoy.identify = identify;
-    //__DisplayJoy.latency = latency;
-    //__DisplayJoy.setKey = setKey;
-    //__DisplayJoy.month = month;
     __DisplayJoy.on = addAction;
-    //__DisplayJoy.ampm = ampm;
-    //__DisplayJoy.ping = ping;
     __DisplayJoy.init = init;
-    //__DisplayJoy.hrs = hrs;
-    //__DisplayJoy.tp = tp;
 
     return function () {
         return __DisplayJoy;
