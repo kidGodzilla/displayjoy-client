@@ -13,9 +13,9 @@ Display Joy's developer libraries provide everything you need to provision, mana
 
 ### Client-side (CDN)
 
-`https://unpkg.com/displayjoy-client@latest/display-joy.js`
+`https://cdn.jsdelivr.net/npm/displayjoy-client@latest/display-joy.js`
 
-`<script src="https://unpkg.com/displayjoy-client@latest/display-joy.js"></script>`
+`<script src="https://cdn.jsdelivr.net/npm/displayjoy-client@latest/display-joy.js"></script>`
 
 ### NPM
 
