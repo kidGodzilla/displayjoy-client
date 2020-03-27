@@ -20,8 +20,10 @@ var Awty = (function Awty () {
         console.log({  __interval: __interval, _server: _server, _debug: _debug, _key: _key });
     }
 
-    function sendCommand (k, cmd) {
-        $.get(_server + '/cmd/' + k + '/' + encodeURIComponent(cmd) + '?_=' + rint(999999999));
+    function sendCommand (k, cmd, v) {
+        var url = _server + '/cmd/' + k + '/' + encodeURIComponent(cmd) + '?_=' + rint(999999999);
+        if (v) url += '&v=' + encodeURIComponent(v);
+        $.get(url);
     }
 
     function _poll (newConf) {
@@ -71,7 +73,16 @@ var Awty = (function Awty () {
                     var cmds = cmd.data ? cmd.data.split(',') : [];
 
                     cmds.forEach(function (command) {
-                        if (__actions[command] && typeof __actions[command] == 'function') __actions[command]();
+                        var ts = + new Date(), v = null;
+
+                        if (command.indexOf('||') !== -1) {
+                            var parts = command.split('||');
+                            command = parts[0];
+                            v = parts[1];
+                            if (v) v = decodeURIComponent(v);
+                        }
+
+                        if (__actions[command] && typeof __actions[command] == 'function') __actions[command](ts, v);
                     });
 
                     // Default action
@@ -202,7 +213,7 @@ var DisplayJoy = (function DisplayJoy () {
 
                 getJSON(gConfUrl(displayKey), function (data) {
                     if (data && typeof data === 'object') {
-                        if (window.applyConfiguration) applyConfiguration(data);
+                        if (window.applyConfiguration) window.applyConfiguration(data);
                         else window.displayConfig = data;
                         if (window._debug) console.log('Device configuration:', data);
                     }
