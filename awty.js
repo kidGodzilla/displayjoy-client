@@ -104,7 +104,17 @@ var Awty = (function Awty () {
             var cmds = cmd.split(',');
 
             cmds.forEach(function (command) {
-                if (__actions[command] && typeof __actions[command] == 'function') __actions[command]();
+                var ts = + new Date(), v = null;
+
+                command = decodeURIComponent(command);
+
+                if (command.indexOf('||') !== -1) {
+                    var parts = command.split('||');
+                    command = parts[0];
+                    v = parts[1];
+                }
+
+                if (__actions[command] && typeof __actions[command] == 'function') __actions[command](ts, v);
             });
 
             // Adjust interval for next request
