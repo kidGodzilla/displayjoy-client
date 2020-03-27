@@ -75,11 +75,12 @@ var Awty = (function Awty () {
                     cmds.forEach(function (command) {
                         var ts = + new Date(), v = null;
 
+                        command = decodeURIComponent(command);
+
                         if (command.indexOf('||') !== -1) {
                             var parts = command.split('||');
                             command = parts[0];
                             v = parts[1];
-                            if (v) v = decodeURIComponent(v);
                         }
 
                         if (__actions[command] && typeof __actions[command] == 'function') __actions[command](ts, v);
