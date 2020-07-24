@@ -13,7 +13,7 @@
  * @example
  * var dj = new DisplayJoy();
  */
-var DisplayJoy = (function DisplayJoy (obj) {
+    var DisplayJoy = (function DisplayJoy (obj) {
 
     window._djConfig = Object.assign({}, obj);
     var socket, getConfTimer, streamTo = null, that = this;
