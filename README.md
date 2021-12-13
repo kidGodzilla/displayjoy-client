@@ -13,13 +13,19 @@ Display Joy's developer libraries provide everything you need to provision, mana
 
 ### Client-side (CDN)
 
-`https://cdn.jsdelivr.net/npm/displayjoy-client@latest/display-joy.js`
+`https://cdn.jsdelivr.net/npm/displayjoy-client@latest/dj2.js`
 
-`<script src="https://cdn.jsdelivr.net/npm/displayjoy-client@latest/display-joy.js"></script>`
+`<script src="https://cdn.jsdelivr.net/npm/displayjoy-client@latest/dj2.js"></script>`
+
+### w/o jQuery (New!)
+
+`https://cdn.jsdelivr.net/gh/kidGodzilla/displayjoy-client@latest/dj-no-jquery.js`
 
 ### NPM
 
 Run `npm i -s displayjoy-client` to save locally via NPM
+
+Next publish will export as module.
 
 
 ## Usage Examples
