@@ -1,6 +1,6 @@
 {
   "name": "displayjoy-client",
-  "version": "0.1.55",
+  "version": "0.1.56",
   "description": "Display Joy Digital Signage client library",
   "main": "./src/display-joy.js",
   "scripts": {
@@ -8,6 +8,7 @@
     "docs": "./node_modules/.bin/jsdoc display-joy.js -d docs -t ./node_modules/minami",
     "start": "cd docs && serve"
   },
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kidGodzilla/displayjoy-client.git"
