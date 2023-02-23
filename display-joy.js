@@ -350,7 +350,7 @@
 
         getConfTimer = setTimeout(function () {
             //var url = 'https://static.meetingroom365.com/config/key-' + displayKey + '.json';
-            var url = 'https://mr365confs.b-cdn.net/key-' + displayKey + '.json';
+            var url = 'https://userconf.meetingroom365.com/key-' + displayKey + '.json';
 
             getJSON(url, function (data) {
                 if (data && typeof data === 'object') {

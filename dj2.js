@@ -189,7 +189,7 @@ var DisplayJoy = (function DisplayJoy () {
     }
 
     function gConfUrl (key) {
-        return 'https://mr365confs.b-cdn.net/key-' + key + '.json';
+        return 'https://userconf.meetingroom365.com/key-' + key + '.json';
     }
 
     function setConfig (config) {
