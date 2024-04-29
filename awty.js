@@ -8,7 +8,7 @@
  *
  */
 var Awty = (function Awty () {
-    var _debug = 0, _key, __interval, __timr, _defaultAction, __actions = {}, _server = 'https://hwm.mr365.co';
+    var _debug = 0, _key, __interval, __timr, _defaultAction, __actions = {}, _server = 'https://hwm.meetingroom365.com';
 
     function rint (max) {
         return Math.floor(Math.random() * Math.floor(max));

@@ -267,7 +267,7 @@
 
     function initialize (cb) {
 
-        var _srvr = 'https://msg.mr365.co';
+        var _srvr = 'https://hwm.meetingroom365.com';
 
         if (window._djConfig && window._djConfig.server) _srvr = window._djConfig.server;
 

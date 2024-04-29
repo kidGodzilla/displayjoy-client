@@ -2,7 +2,7 @@
  * Are we there yet?
  */
 var Awty = (function Awty() {
-    var _debug = 0, _key, __interval, __timr, _defaultAction, __actions = {}, _server = 'https://hwm.mr365.co';
+    var _debug = 0, _key, __interval, __timr, _defaultAction, __actions = {}, _server = 'https://hwm.meetingroom365.com';
 
     function rint(max) {
         return Math.floor(Math.random() * Math.floor(max));
@@ -152,7 +152,7 @@ var Awty = (function Awty() {
  * var dj = new DisplayJoy();
  */
 var DisplayJoy = (function DisplayJoy() {
-    var getConfTimer, awty, _srvr = 'https://hwm.mr365.co', _APIURL = 'https://api.meetingroom365.com';
+    var getConfTimer, awty, _srvr = 'https://hwm.meetingroom365.com', _APIURL = 'https://api.meetingroom365.com';
 
     if (window._APIURL) _APIURL = window._APIURL;
 
