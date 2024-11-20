@@ -319,7 +319,7 @@ var DisplayJoy = (function DisplayJoy () {
 
     function init (key, cb) {
         window.__displayKey = key;
-        setLocalStorage('_displayKey', key);
+        // setLocalStorage('_displayKey', key);
 
         initialize(function () {
             awty.init({ key: key, server: _srvr }, cb);
