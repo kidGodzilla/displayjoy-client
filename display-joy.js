@@ -146,6 +146,25 @@
         return i18n.months[i];
     }
 
+    var _secret = '';
+
+    function setSecret (s) { _secret = s || ''; }
+
+    function returnBestSecret (displayKey) {
+        if (_secret) return _secret;
+        var s = getSearchParam('secret');
+        if (s) return s;
+        try {
+            if (displayKey) {
+                var v = localStorage.getItem('__secret_' + displayKey);
+                if (v) return v;
+            }
+            var g = localStorage.getItem('__secret');
+            if (g) return g;
+        } catch (e) {}
+        return '';
+    }
+
     function setConfig (config) {
         window.__deviceConfiguration = config;
     }
@@ -349,8 +368,9 @@
         clearTimeout(getConfTimer); // Debounce
 
         getConfTimer = setTimeout(function () {
-            //var url = 'https://static.meetingroom365.com/config/key-' + displayKey + '.json';
-            var url = 'https://userconf.meetingroom365.com/key-' + displayKey + '.json';
+            var url = 'https://api.meetingroom365.com/api/display/config/' + displayKey + '?ts=' + Date.now();
+            var secret = returnBestSecret(displayKey);
+            if (secret) url += '&secret=' + encodeURIComponent(secret);
 
             getJSON(url, function (data) {
                 if (data && typeof data === 'object') {
@@ -422,6 +442,7 @@
     DisplayJoy.getSearchParam = getSearchParam;
     DisplayJoy.coerceBoolean = coerceBoolean;
     DisplayJoy.updateStatus = updateStatus;
+    DisplayJoy.setSecret = setSecret;
     DisplayJoy.checkLatency = checkLatency;
     DisplayJoy.initialize = initialize;
     DisplayJoy.dayOfWeek = dayOfWeek;

@@ -188,8 +188,39 @@ var DisplayJoy = (function DisplayJoy () {
         xmlHttp.send(null);
     }
 
+    var _secret = '';
+
+    function setSecret (s) { _secret = s || ''; }
+
+    function _getSearchParam (k) {
+        var val;
+        try {
+            if (location.search.indexOf(k) !== -1) val = location.search.split(k + '=')[1];
+            if (val && val.indexOf('&') !== -1) val = val.split('&')[0];
+        } catch (e) {}
+        return val || '';
+    }
+
+    function returnBestSecret (displayKey) {
+        if (_secret) return _secret;
+        var s = _getSearchParam('secret');
+        if (s) return s;
+        try {
+            if (displayKey) {
+                var v = localStorage.getItem('__secret_' + displayKey);
+                if (v) return v;
+            }
+            var g = localStorage.getItem('__secret');
+            if (g) return g;
+        } catch (e) {}
+        return '';
+    }
+
     function gConfUrl (key) {
-        return 'https://userconf.meetingroom365.com/key-' + key + '.json';
+        var url = _APIURL + '/api/display/config/' + key + '?ts=' + Date.now();
+        var secret = returnBestSecret(key);
+        if (secret) url += '&secret=' + encodeURIComponent(secret);
+        return url;
     }
 
     function setConfig (config) {
@@ -336,6 +367,7 @@ var DisplayJoy = (function DisplayJoy () {
     __DisplayJoy.updateStatus = updateStatus;
     __DisplayJoy.initialize = initialize;
     __DisplayJoy.setConfig = setConfig;
+    __DisplayJoy.setSecret = setSecret;
     __DisplayJoy.on = addAction;
     __DisplayJoy.init = init;
 
