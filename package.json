@@ -1,14 +1,13 @@
 {
   "name": "displayjoy-client",
-  "version": "0.1.59",
+  "version": "0.2.0",
   "description": "Display Joy Digital Signage client library",
-  "main": "./src/display-joy.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "docs": "./node_modules/.bin/jsdoc display-joy.js -d docs -t ./node_modules/minami",
     "start": "cd docs && serve"
   },
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kidGodzilla/displayjoy-client.git"
@@ -20,7 +19,7 @@
   },
   "homepage": "https://github.com/kidGodzilla/displayjoy-client#readme",
   "dependencies": {
-    "jsdoc": "^3.5.5",
+    "jsdoc": "^4.0.5",
     "minami": "^1.2.3"
   }
 }

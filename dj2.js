@@ -50,6 +50,7 @@ var Awty = (function Awty () {
              */
             if (!window.__wsErrorCount || window.__wsErrorCount < 10) {
                 var u = _server.replace('http', 'ws') + '/ws/' + _key;
+                if (window.__ws) { try { window.__ws.close(); } catch (e) {} }
                 window.__ws = new WebSocket(u);
 
                 window.__ws.onopen = function () {
